@@ -29,19 +29,19 @@
 
         </div>
         <div class="card-body">
-            <form action="login.php" method="post">
+            <form action="login.php" method="GET">
                 <div class="input-group form-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="email" class="form-control" placeholder="Username">
+                    <input type="text" name="identifiant" id = "identifiant" class="form-control" placeholder="Username" required>
                 </div>
 
                 <div class="input-group form-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
-                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <input type="password" name="password" id = "password" class="form-control" placeholder="Password" required>
                 </div>
 
                 <div class="form-group">
@@ -49,6 +49,9 @@
                 </div>
 
             </form>
+			<div class="form-group">
+                    <a name="inscription" value="inscription" class="btn btn-outline-danger float-right login_btn" href = "inscription.html">Inscription</a>
+                </div>
         </div>
     </div>
 </div>
