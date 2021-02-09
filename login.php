@@ -22,7 +22,7 @@ if (isset($_GET['identifiant']) && isset($_GET['password'])) {
 	$nb_rows = mysqli_num_rows($result);
 	
 	if($nb_rows > 0) {
-		header('Location: distance.html');
+		header('Location: distance.php');
 		
 	}
 	else {
