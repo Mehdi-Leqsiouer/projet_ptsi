@@ -30,26 +30,16 @@
       </div>
       <div class="col-md-6">
         <h2 class="text-uppercase mt-3 font-weight-bold text-white">DISTANCE</h2>
-        <form action="">
+        <form action="calcul_distance.php" method = "GET">
           <div class="row">
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" class="form-control mt-2" placeholder="Point de depart" required>
+                <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Point de depart" required>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" class="form-control mt-2" placeholder="Point d'arrive" required>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <input type="email" class="form-control mt-2" placeholder="Point d'arrive 2" required>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <input type="number" class="form-control mt-2" placeholder="Point d'arrive 3" required>
+                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Point d'arrive" required>
               </div>
             </div>
             <div class="col-12">
@@ -57,6 +47,9 @@
             </div>
           </div>
         </form>
+		<div class="col-12">
+              <a  type="submit" href = "index.html">Se déconnecter</a>
+            </div>
         <div class="text-white">
       </div>
 
