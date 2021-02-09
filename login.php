@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (isset($_GET['identifiant']) && isset($_GET['password'])) {
 	$id = $_GET['identifiant'];
 	$pwd = $_GET['password'];
@@ -18,20 +19,26 @@ if (isset($_GET['identifiant']) && isset($_GET['password'])) {
 	
 	$result = mysqli_query($con,$query) or die ("Couldn't execute query: ".mysqli_error($con));
 	
+	$row = mysqli_fetch_array($result);
 	
 	$nb_rows = mysqli_num_rows($result);
 	
 	if($nb_rows > 0) {
+		$_SESSION["prenom"] = $row["prenom"];
+		$_SESSION["nom"] = $row["nom"];
 		header('Location: distance.php');
+		exit();
 		
 	}
 	else {
-		header('Location: index.html');
+		header('Location: index.php');
+		exit();
 	}
 	
 }
 else {
-	header('Location: index.html');
+	header('Location: index.php');
+	exit();
 }
 //header('Location: index.html');
 die();

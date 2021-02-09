@@ -1,8 +1,23 @@
+<?php
+session_start();
+
+if(!isset($_SESSION["prenom"])) {
+	//header('Location: index.php');
+	echo "<script>window.location.href='index.php';</script>";
+}
+else {
+	$nom = $_SESSION["nom"];
+	$prenom = $_SESSION["prenom"];
+}
+
+?>
+
 <html>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
+
 
 <!DOCTYPE html>
 <html>
@@ -82,6 +97,9 @@
       </div>
       <div class="col-md-6">
         <h2 class="text-uppercase mt-3 font-weight-bold text-white">DISTANCE</h2>
+		
+		<h3 class="text-uppercase mt-4 font-weight-bold text-white"><?php echo "Bienvenue ".$nom." ".$prenom?></h3>
+		
         <form action="calcul_distance.php" method = "GET">
           <div class="row">
             <div class="col-lg-6">
@@ -89,19 +107,19 @@
                 <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Point de depart" value = "<?php echo $depart ?>" required>
               </div>
             </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Point d'arrive" value = "<?php echo $arriver ?>" required>
-              </div>
-            </div>
 			<div class="col-lg-6">
               <div class="form-group">
                 <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville de départ" value = "<?php echo $v1 ?>" required>
               </div>
             </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Point d'arriver" value = "<?php echo $arriver ?>" required>
+              </div>
+            </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arrive" value = "<?php echo $v2 ?>" required>
+                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arriver" value = "<?php echo $v2 ?>" required>
               </div>
             </div>
 			
@@ -138,7 +156,7 @@
           </div>
         </form>
 		<div class="col-12">
-              <a  type="submit" href = "index.html">Se déconnecter</a>
+              <a  type="submit" href = "deconnection.php">Se déconnecter</a>
             </div>
         <div class="text-white">
       </div>

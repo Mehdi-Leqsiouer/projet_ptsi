@@ -1,4 +1,9 @@
 ﻿<?php
+session_start();
+if(!isset($_SESSION["prenom"])) {
+	//header('Location: index.php');
+	echo "<script>window.location.href='index.php';</script>";
+}
 function CallAPI($method, $url, $data = false)
 {
     $curl = curl_init();
