@@ -19,22 +19,23 @@ def temps(dist,mode):
     
     
 def main():
-    lat1 = sys.argv[1]
+    """lat1 = sys.argv[1]
     lon1 = sys.argv[2]
     lat2 = sys.argv[3]
     lon2 = sys.argv[4]
     
-    mode = sys.argv[5]+"";
+    mode = sys.argv[5]+"";"""
 
     
-    """lat1 = 48.894435
+    lat1 = 48.894435
     lon1 = 2.208686
     lat2 = 48.957898
     lon2 = 2.549657
-    mode = "Voiture"""
+    mode = "Voiture"
       
     res = distance(float(lat1),float(lon1),float(lat2),float(lon2))
     t = temps(res,mode)
+    print("temps : "+str(t))
     print("{:.2f}".format(res))
     nb_heures = int(t%60)
     print(nb_heures)

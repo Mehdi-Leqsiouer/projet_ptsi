@@ -2,45 +2,12 @@
 session_start();
 if(!isset($_SESSION["prenom"])) {
 	//header('Location: index.php');
-	echo "<script>window.location.href='index.php';</script>";
-}
-function CallAPI($method, $url, $data = false)
-{
-    $curl = curl_init();
-
-    switch ($method)
-    {
-        case "POST":
-            curl_setopt($curl, CURLOPT_POST, 1);
-
-            if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            break;
-        case "PUT":
-            curl_setopt($curl, CURLOPT_PUT, 1);
-            break;
-        default:
-            if ($data)
-                $url = sprintf("%s?%s", $url, http_build_query($data));
-    }
-
-    // Optional Authentication:
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
-
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-    $result = curl_exec($curl);
-
-    curl_close($curl);
-
-    return $result;
+	//echo "<script>window.location.href='index.php';</script>";
 }
 
-function API($street,$city) {
+function API($street,$city,$key) {
 	$queryString = http_build_query([
-  'access_key' => '519187be45d8881773bd8692cab5ad3b',
+  'access_key' => $key,
   'query' => $street,
   'region' => $city,
   'output' => 'json',
@@ -59,6 +26,24 @@ function API($street,$city) {
 	//print_r($apiResult);
 }
 
+function getPath($lat1,$lon1,$lat2,$lon2,$mode) {
+	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/v2/directions/$mode?api_key=5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c&start=$lon1,$lat1&end=$lon2,$lat1");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	  "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8"
+	));
+
+	$response = curl_exec($ch);
+	curl_close($ch);
+
+	//var_dump($response);
+	return $response;
+	}
+
 
 if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depart']) && isset($_GET['ville_arriver'])) {
 
@@ -69,6 +54,16 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	$v2 = $_GET['ville_arriver'];
 	
 	$mode = $_GET['mode'];
+	$mode_api = "";
+	if ($mode == "Voiture") {
+		$mode_api = "driving-car";
+	}
+	else if ($mode == "Velo") {
+		$mode_api = "cycling-road";
+	}
+	else {
+		$mode_api = "foot-walking";
+	}
 	
 	$key = "519187be45d8881773bd8692cab5ad3b";
 	
@@ -82,8 +77,8 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	//$res2 = CallAPI("GET",$url2);
 	
 	//$result = json_decode($res1, true);
-	$result = API($depart,$v1);
-	$result2 = API($arriver,$v2);
+	$result = API($depart,$v1,$key);
+	$result2 = API($arriver,$v2,$key);
 	
 	$data = $result["data"];
 	//var_dump ($data);
@@ -123,14 +118,56 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	$heures = $value[1];
 	$minutes = $value[2];
 	
-	echo $heures."</br>";
-	echo $minutes;
+	//echo $heures."</br>";
+	//echo $minutes;
 	
-	//$tmp = passthru("python3 get_distance.py $lat_depart $long_depart $lat_arriver $long_arriver");
-    //echo $tmp;
-	//header("Location: distance.php");
-	echo "<script>window.location.href='distance.php?km=$km&heures=$heures&minutes=$minutes&arriver=$arriver&depart=$depart&v1=$v1&v2=$v2';</script>";
-	//header("Location: distance.php?km=".$km);
-	exit;
+	
+	$path = getPath($lat_depart,$long_depart,$lat_arriver,$long_arriver,$mode_api);
+	echo "</br></br>";
+	//echo $path;
+	
+	
+	$path_decode = json_decode($path,true);
+	//var_dump( $path_decode);
+	
+	$data = $path_decode["features"];
+	//var_dump($data);
+	$data_tmp = $data[0];
+	//var_dump($data_tmp);
+	$data2 = $data_tmp["properties"];
+	//var_dump($data2);
+	//var_dump($data2);
+	$data3 = $data2["segments"];
+	//var_dump($data);
+	$data4 = $data3[0];
+	
+	$dist = $data4["distance"];
+	$duration = $data4["duration"];
+	
+	//echo $dist;
+	echo "distance de base : ".$duration."</br>";
+	
+	
+	$dist = $dist/1000;
+	$duration = $duration/3600;
+	
+	echo "distance ensuite : ".$duration."</br>";
+	
+	$nb_heures = (int) ($duration%60);
+	if ($nb_heures < 1) {
+		$minutes = (int) ($duration*60);
+	}
+	else {
+		$minutes = (int) ($duration*60);
+		$minutes = $minutes - $nb_heures*60;
+	}
+	
+	echo $dist."</br>";
+	$dist = (int) $dist;
+	echo $minutes."</br>";;
+	echo $nb_heures."</br>";;
+	
+	echo "<script>window.location.href='distance.php?km=$dist&heures=$nb_heures&minutes=$minutes&arriver=$arriver&depart=$depart&v1=$v1&v2=$v2';</script>";
+	//exit;
 }
 ?>
