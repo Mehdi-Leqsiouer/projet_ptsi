@@ -22,6 +22,7 @@ else {
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" http-equiv="Cache-control" content="no-cache">
 	<title>Distance</title>
    <!--Made with love by Mutiullah Samim -->
    
@@ -91,10 +92,43 @@ else {
 <div class="row" id="contatti">
 <div class="container mt-5" >
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+  
+  <script src="leaflet.ajax.min.js"> </script>
+  
     <div class="row" style="height:550px;">
-      <div class="col-md-6 maps" >
-         <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11880.492291371422!2d12.4922309!3d41.8902102!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28f1c82e908503c4!2sColosseo!5e0!3m2!1sit!2sit!4v1524815927977" frameborder="0" style="border:0" allowfullscreen></iframe>
-      </div>
+      <div class="col-md-6 maps" id = "map" > </div>
+         <!--<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11880.492291371422!2d12.4922309!3d41.8902102!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28f1c82e908503c4!2sColosseo!5e0!3m2!1sit!2sit!4v1524815927977" frameborder="0" style="border:0" allowfullscreen></iframe>-->
+		 <script type = "text/javascript">
+		 var map = L.map('map').setView([48.8566969, 2.3514616], 11);
+
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		/*L.marker([51.5, -0.09]).addTo(map)
+			.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+			.openPopup();*/
+		
+		var geojsonLayer = new L.GeoJSON.AJAX("result.geojson");
+		$.getJSON("result.geojson", function(json) {
+			//console.log(json); // this will show the info it in firebug console
+			var coord = json.bbox;
+			L.marker([coord[1], coord[0]]).addTo(map)
+			.bindPopup('Point de départ')
+			.openPopup();
+			L.marker([coord[3], coord[2]]).addTo(map)
+			.bindPopup("Point d'arrivé")
+			.openPopup();
+		});
+		geojsonLayer.addTo(map);
+		 </script>
+      
       <div class="col-md-6">
         <h2 class="text-uppercase mt-3 font-weight-bold text-white">DISTANCE</h2>
 		

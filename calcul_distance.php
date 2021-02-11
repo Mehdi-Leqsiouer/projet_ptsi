@@ -26,9 +26,29 @@ function API($street,$city,$key) {
 	//print_r($apiResult);
 }
 
-function getPath($lat1,$lon1,$lat2,$lon2,$mode) {
+
+function getCoord($location) {
 	$ch = curl_init();
 
+	curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c&text=$location");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	  "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8"
+	));
+
+	$response = curl_exec($ch);
+	curl_close($ch);
+
+	//var_dump($response);
+	
+	return $response;
+	
+}
+
+function getPath($lat1,$lon1,$lat2,$lon2,$mode) {
+	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/v2/directions/$mode?api_key=5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c&start=$lon1,$lat1&end=$lon2,$lat1");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_HEADER, FALSE);
@@ -80,6 +100,19 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	$result = API($depart,$v1,$key);
 	$result2 = API($arriver,$v2,$key);
 	
+	
+	/*$loc1 = $depart." ".$v1;
+	$loc2 = $arriver." ".$v2;	
+	
+	$result = getCoord($loc1);
+	$result2 = getCoord($loc2);
+	
+	var_dump($result);*/
+	
+	$res1_decode = json_decode($result,true);
+	$res2_decode = json_decode($result2,true);
+	
+	
 	$data = $result["data"];
 	//var_dump ($data);
 	
@@ -126,6 +159,10 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	echo "</br></br>";
 	//echo $path;
 	
+	$fp = fopen("result.geojson","w");
+	fwrite($fp,$path);
+	fclose($fp);
+	
 	
 	$path_decode = json_decode($path,true);
 	//var_dump( $path_decode);
@@ -168,6 +205,7 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	echo $nb_heures."</br>";;
 	
 	echo "<script>window.location.href='distance.php?km=$dist&heures=$nb_heures&minutes=$minutes&arriver=$arriver&depart=$depart&v1=$v1&v2=$v2';</script>";
-	//exit;
+	clearstatcache();
+	exit;
 }
 ?>
