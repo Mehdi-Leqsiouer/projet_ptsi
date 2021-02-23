@@ -10,6 +10,7 @@ function API($street,$city,$key) {
   'access_key' => $key,
   'query' => $street,
   'region' => $city,
+  'country' => 'FR',
   'output' => 'json',
   'limit' => 1,
 	]);
@@ -30,7 +31,7 @@ function API($street,$city,$key) {
 function getCoord($location) {
 	$ch = curl_init();
 
-	curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c&text=$location");
+	curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c&text=$location&boundary.country=FR&size=1");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
