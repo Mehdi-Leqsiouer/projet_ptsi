@@ -8,6 +8,8 @@ if(!isset($_SESSION["prenom"])) {
 else {
 	$nom = $_SESSION["nom"];
 	$prenom = $_SESSION["prenom"];
+	
+	
 }
 
 ?>
@@ -118,15 +120,23 @@ else {
 		var geojsonLayer = new L.GeoJSON.AJAX("result.geojson");
 		$.getJSON("result.geojson", function(json) {
 			//console.log(json); // this will show the info it in firebug console
-			var coord = json.bbox;
-			L.marker([coord[1], coord[0]]).addTo(map)
+			var metadata = json.metadata;
+			var query = metadata.query;
+			var coord = query.coordinates;
+			var depart = coord[0];
+			var arriver = coord[1];
+			/*var depart = [coord[1],coord[0]];
+            var arriver = [coord[3],coord[2]];
+            console.log(depart);*/
+			L.marker([depart[1], depart[0]]).addTo(map)
 			.bindPopup('Point de départ')
 			.openPopup();
-			L.marker([coord[3], coord[2]]).addTo(map)
+			L.marker([arriver[1], arriver[0]]).addTo(map)
 			.bindPopup("Point d'arrivé")
 			.openPopup();
 		});
 		geojsonLayer.addTo(map);
+		
 		 </script>
       
       <div class="col-md-6">
@@ -148,12 +158,12 @@ else {
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Point d'arriver" value = "<?php echo $arriver ?>" required>
+                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Point d'arrivé" value = "<?php echo $arriver ?>" required>
               </div>
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arriver" value = "<?php echo $v2 ?>" required>
+                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arrivée" value = "<?php echo $v2 ?>" required>
               </div>
             </div>
 			
