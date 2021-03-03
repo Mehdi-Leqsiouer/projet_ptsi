@@ -79,34 +79,6 @@ else {
     $km = "";
 }
 
-if (isset($_GET['depart'])) {
-    $depart = $_GET['depart'];
-}
-else {
-    $depart = "";
-}
-
-if (isset($_GET['arriver'])) {
-    $arriver = $_GET['arriver'];
-}
-else {
-    $arriver = "";
-}
-
-if (isset($_GET['v1'])) {
-    $v1 = $_GET['v1'];
-}
-else {
-    $v1 = "";
-}
-
-if (isset($_GET['v2'])) {
-    $v2 = $_GET['v2'];
-}
-else {
-    $v2 = "";
-}
-
 if (isset($_GET['minutes'])) {
     $minutes = $_GET['minutes']." minutes";
 }
@@ -151,23 +123,18 @@ else {
                     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
                     .openPopup();*/
 
-                var geojsonLayer = new L.GeoJSON.AJAX("result.geojson");
-                $.getJSON("result.geojson", function(json) {
+                var geojsonLayer = new L.GeoJSON.AJAX("result_multi.geojson");
+                $.getJSON("result_multi.geojson", function(json) {
                     //console.log(json); // this will show the info it in firebug console
                     var metadata = json.metadata;
                     var query = metadata.query;
                     var coord = query.coordinates;
-                    var depart = coord[0];
-                    var arriver = coord[1];
-                    /*var depart = [coord[1],coord[0]];
-                    var arriver = [coord[3],coord[2]];
-                    console.log(depart);*/
-                    L.marker([depart[1], depart[0]]).addTo(map)
-                        .bindPopup('Point de départ')
-                        .openPopup();
-                    L.marker([arriver[1], arriver[0]]).addTo(map)
-                        .bindPopup("Point d'arrivé")
-                        .openPopup();
+
+                    for (index = 0;index < coord.length;++index) {
+                        var tab = coord[index];
+                        L.marker([tab[1], tab[0]]).addTo(map)
+                            .bindPopup('Point')
+                    }
                 });
                 geojsonLayer.addTo(map);
 
@@ -194,6 +161,35 @@ else {
                         </span>
                                     </div>
                             </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <select id = "mode" name = "mode" value = "mode">
+                                        <option = value="Velo">Velo</option>
+                                        <option = value="Pieton">Pieton</option>
+                                        <option = value="Voiture">Voiture</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" size="50" id = "distance" name = "distance" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" size="50" id = "temps" name = "temps" class="form-control mt-2" value ="<?php echo $heures.$minutes ?>" readonly>
+                                </div>
+                            </div>
+
                             <div class="col-12">
                                 <button class="btn btn-light" type="submit">Envoyer</button>
                             </div>

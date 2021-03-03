@@ -177,7 +177,7 @@ else {
 		
 		<h3 class="text-uppercase mt-4 font-weight-bold text-white"><?php echo "Bienvenue ".$nom." ".$prenom?></h3>
 		
-        <form action="calcul_distance.php" method = "GET">
+        <form action="calcul_distance.php" method = "GET" autocomplete="off">
           <div class="row">
             <div class="col-lg-6">
               <div class="form-group">
