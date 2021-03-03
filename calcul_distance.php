@@ -24,28 +24,25 @@ function API($street,$city,$key) {
 
 	$apiResult = json_decode($json, true);
 	return $apiResult;
-	//print_r($apiResult);
+
 }
 
-
 function getCoord($location) {
-	$ch = curl_init();
+    $ch = curl_init();
+    $locationEncode = urlencode($location);
+    curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c&text=$locationEncode&boundary.country=FR&size=1");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
-	curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c&text=$location&boundary.country=FR&size=1");
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8"
+    ));
 
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-	  "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8"
-	));
+    $response = curl_exec($ch);
+    curl_close($ch);
 
-	$response = curl_exec($ch);
-	curl_close($ch);
-
-	//var_dump($response);
-	
-	return $response;
-	
+    //var_dump($response);
+    return $response;
 }
 
 function getPath($lat1,$lon1,$lat2,$lon2,$mode) {
@@ -64,6 +61,57 @@ function getPath($lat1,$lon1,$lat2,$lon2,$mode) {
 	//var_dump($response);
 	return $response;
 	}
+
+
+function getMatrix($list_coord,$mode) {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/v2/matrix/$mode");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+
+    //curl_setopt($ch, CURLOPT_POSTFIELDS, '{"locations":[[9.70093,48.477473],[9.207916,49.153868],[37.573242,55.801281],[115.663757,38.106467]],"units":"km"}');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "{'locations':$list_coord,'units':'km'}");
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
+        "Authorization: 5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c",
+        "Content-Type: application/json; charset=utf-8"
+    ));
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    //var_dump($response);
+
+    return $response;
+}
+
+function getMultiPath($list_coord,$mode) {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/v2/directions/$mode");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+
+    //curl_setopt($ch, CURLOPT_POSTFIELDS, '{"coordinates":[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]]}');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "{'coordinates':$list_coord}");
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
+        "Authorization: 5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c",
+        "Content-Type: application/json; charset=utf-8"
+    ));
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return $response;
+}
 
 
 if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depart']) && isset($_GET['ville_arriver'])) {
@@ -98,23 +146,35 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	//$res2 = CallAPI("GET",$url2);
 	
 	//$result = json_decode($res1, true);
-	$result = API($depart,$v1,$key);
-	$result2 = API($arriver,$v2,$key);
+	//$result = API($depart,$v1,$key);
+	//$result2 = API($arriver,$v2,$key);
 	
 	
-	/*$loc1 = $depart." ".$v1;
+	$loc1 = $depart." ".$v1;
 	$loc2 = $arriver." ".$v2;	
 	
 	$result = getCoord($loc1);
 	$result2 = getCoord($loc2);
-	
-	var_dump($result);*/
+
+	var_dump($result2);
 	
 	$res1_decode = json_decode($result,true);
 	$res2_decode = json_decode($result2,true);
-	
-	
-	$data = $result["data"];
+
+    $bbox = $res1_decode['bbox'];
+    $bbox2 = $res2_decode['bbox'];
+
+    $lat_depart = $bbox[1];
+    $long_depart = $bbox[0];
+
+    $lat_arriver = $bbox2[1];
+    $long_arriver = $bbox2[0];
+
+    echo $lat_depart;
+    echo "</br>";
+    echo $long_depart;
+
+	/*$data = $result["data"];
 	//var_dump ($data);
 	
 	$t = $data[0];
@@ -123,9 +183,7 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	
 	$lat_depart = $t["latitude"];
 	$long_depart = $t["longitude"];
-	#echo $lat_depart;
-	#echo "</br>";
-	#echo $long_depart;
+
 	
 	//$result2 = json_decode($res2, true);
 	
@@ -153,7 +211,7 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	$minutes = $value[2];
 	
 	//echo $heures."</br>";
-	//echo $minutes;
+	//echo $minutes;*/
 	
 	
 	$path = getPath($lat_depart,$long_depart,$lat_arriver,$long_arriver,$mode_api);
@@ -173,12 +231,8 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	$data_tmp = $data[0];
 	//var_dump($data_tmp);
 	$data2 = $data_tmp["properties"];
-	//var_dump($data2);
-	//var_dump($data2);
 	$data3 = $data2["segments"];
-	//var_dump($data);
 	$data4 = $data3[0];
-	
 	$dist = $data4["distance"];
 	$duration = $data4["duration"];
 	

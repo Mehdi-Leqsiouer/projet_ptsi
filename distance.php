@@ -36,7 +36,38 @@ else {
 
 	<!--Custom styles-->
 	<link rel="stylesheet" type="text/css" href="styles2.css">
+
+    <link rel="stylesheet" type="text/css" href="styles3.css">
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" id="banner">
+        <div class="container">
+            <!-- Brand -->
+
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="distance.php">Distance entre 2 points</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="distance_multi.php">Distance multi-points</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.php">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
 </head>
+
 <body>
 
 <?php 
@@ -91,8 +122,10 @@ else {
 	
  ?>
 
+
 <div class="row" id="contatti">
 <div class="container mt-5" >
+    <br>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -199,6 +232,11 @@ else {
             </div>
           </div>
         </form>
+          <form action="save_favori.php" method = "GET">
+          <div class="col-12">
+              <button class="btn btn-light" type="favori">Enregistrer cet itinéraire</button>
+          </div>
+      </form>
 		<div class="col-12">
               <a  type="submit" href = "deconnection.php">Se déconnecter</a>
             </div>
