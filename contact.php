@@ -15,7 +15,9 @@ else {
 <html>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<!--<script src="form.js"></script>-->
 <!------ Include the above in your HEAD tag ---------->
 
 <!DOCTYPE html>
@@ -72,18 +74,18 @@ else {
     <div class="contact-image">
         <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
     </div>
-    <form method="GET" action = "action_contact.php" autocomplete="off">
+    <form name = "formName" id = "formName" method="GET" autocomplete="off">
         <h3>Laissez-nous un message</h3>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <input type="text" name="txtName" class="form-control" placeholder="Votre prénom *" value="" />
+                    <input type="text" name="name" class="form-control" placeholder="Votre prénom *" value="" />
                 </div>
                 <div class="form-group">
-                    <input type="text" name="txtEmail" class="form-control" placeholder="Votre e-mail *" value="" />
+                    <input type="text" name="email" class="form-control" placeholder="Votre e-mail *" value="" />
                 </div>
                 <div class="form-group">
-                    <input type="text" name="txtPhone" class="form-control" placeholder="Votre numéro de téléphone (optionnel)" value="" />
+                    <input type="text" name="phone" class="form-control" placeholder="Votre numéro de téléphone (optionnel)" value="" />
                 </div>
                 <div class="form-group">
                     <input type="submit" name="btnSubmit" class="btnContact" value="Envoyer message" />
@@ -91,11 +93,64 @@ else {
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <textarea name="txtMsg" class="form-control" placeholder="Your Message *" style="width: 100%; height: 150px;"></textarea>
+                    <textarea name="message" class="form-control" placeholder="Your Message *" style="width: 100%; height: 150px;"></textarea>
                 </div>
             </div>
-        </div>
+
     </form>
+
+    <div class="col-12">
+        <a  type="submit" href = "deconnection.php">Se déconnecter</a>
+    </div>
+    <div class="text-white">
+    </div>
+
+    <script>
+        $(document).ready(function() {
+
+            // process the form
+            $('#formName').submit(function(event) {
+                event.preventDefault();
+                // get the form data
+                // there are many ways to get this data using jQuery (you can use the class or id also)
+                var formData = {
+                    'name'              : $('input[name=name]').val(),
+                    'email'             : $('input[name=email]').val(),
+                    'phone'             : $('input[name=phone]').val(),
+                    'message'             : $('textarea[name=message]').val()
+                };
+                // process the form
+                $.ajax({
+                    type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                    url         : 'send_contact.php', // the url where we want to POST
+                    data        : formData // our data object
+                })
+                    // using the done promise callback
+                    .done(function(data) {
+
+                        // log data to the console so we can see
+                        console.log(data);
+                        var json_data = JSON.parse(data);
+                        console.log(json_data.success);
+                        if (json_data.success != true) {
+                            console.log("erreur");
+                        }
+                        else{
+                            $('#formName').html('<div class="alert alert-success">' + json_data.message + '</div> <a  type="submit" href = "deconnection.php">Se déconnecter</a>');
+                        }
+
+                        // here we will handle errors and validation messages
+                    }).fail(function() {
+                    alert("erreur");
+                })
+                ;
+
+                // stop the form from submitting the normal way and refreshing the page
+                event.preventDefault();
+            });
+
+        });
+    </script>
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ $(function()
     }).on('click', '.btn-remove', function(e)
     {
         $(this).parents('.entry:first').remove();
-
+        x-= 1;
         e.preventDefault();
         return false;
     });
