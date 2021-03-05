@@ -72,8 +72,9 @@ function getMatrix($list_coord,$mode) {
 
     curl_setopt($ch, CURLOPT_POST, TRUE);
 
+    $post_field = '{"locations":'.$list_coord.',"units" : "km"}';
     //curl_setopt($ch, CURLOPT_POSTFIELDS, '{"locations":[[9.70093,48.477473],[9.207916,49.153868],[37.573242,55.801281],[115.663757,38.106467]],"units":"km"}');
-    curl_setopt($ch, CURLOPT_POSTFIELDS, "{'locations':$list_coord,'units':'km'}");
+    curl_setopt($ch, CURLOPT_POSTFIELDS,$post_field);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
         "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
@@ -139,8 +140,10 @@ if (isset($_GET['fields'])) {
     }
     $coords_encode = json_encode($list_coords);
     //var_dump($test);
+    $matrix = getMatrix($coords_encode,$mode_api);
+    var_dump($matrix);
+
     $path = getMultiPath($coords_encode,$mode_api);
-    //var_dump($path);
 
     $fp = fopen("result_multi.geojson","w");
     fwrite($fp,$path);
@@ -163,7 +166,7 @@ if (isset($_GET['fields'])) {
     $dist = $dist/1000;
     $duration = $duration/3600;
 
-    echo "distance ensuite : ".$duration."</br>";
+    //echo "distance ensuite : ".$duration."</br>";
 
     $nb_heures = (int) ($duration%60);
     if ($nb_heures < 1) {
@@ -175,7 +178,7 @@ if (isset($_GET['fields'])) {
     }
 
     $dist = (int) $dist;
-    echo "<script>window.location.href='distance_multi.php?km=$dist&heures=$nb_heures&minutes=$minutes';</script>";
+    //echo "<script>window.location.href='distance_multi.php?km=$dist&heures=$nb_heures&minutes=$minutes';</script>";
     clearstatcache();
     exit;
 }
