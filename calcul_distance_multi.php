@@ -139,9 +139,39 @@ if (isset($_GET['fields'])) {
         array_push($list_coords,$bbox_sliced);
     }
     $coords_encode = json_encode($list_coords);
-    //var_dump($test);
+    //var_dump($list_coords);
     $matrix = getMatrix($coords_encode,$mode_api);
-    var_dump($matrix);
+   // var_dump($matrix);
+
+    $matrix_decode = json_decode($matrix,true);
+    $duration_matrix = $matrix_decode["durations"];
+    $duration_0 = $duration_matrix[0];
+   // var_dump($duration_0);
+    echo "</br>";
+    $index = 0;
+    $coord_order = array();
+    array_push($coord_order,$list_coords[0]);
+    //var_dump($coord_order);
+    echo "</br>";
+    $duration_0 = array_diff($duration_0,[0]);
+    //var_dump($duration_0);
+    foreach($list_coords as $val) {
+        if ($index !=0) {
+            //var_dump($val);
+            $min_value = min($duration_0);
+            //var_dump($duration_0);
+            //echo "</br>";
+            $t = array_keys($duration_0, $min_value);
+            $in_delete = $t[0];
+            array_push($coord_order,$list_coords[$in_delete]);
+            $duration_0 = array_diff($duration_0,[$in_delete]);
+           // echo $in_delete;
+            //var_dump($t);
+            //echo $duration_0[$index]."</br>";
+        }
+        $index++;
+    }
+    var_dump($coord_order);
 
     $path = getMultiPath($coords_encode,$mode_api);
 
