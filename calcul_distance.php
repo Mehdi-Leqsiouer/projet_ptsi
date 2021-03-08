@@ -230,6 +230,7 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
     $retour['km'] = $dist;
     $retour['heures'] = $nb_heures;
     $retour['minutes'] = $minutes;
+    $retour['path'] = "$id/result.geojson";
     //var_dump(json_encode($retour));
     echo json_encode($retour);
 

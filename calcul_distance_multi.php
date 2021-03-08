@@ -223,6 +223,7 @@ if (isset($_GET['fields'])) {
     $retour['km'] = $dist;
     $retour['heures'] = $nb_heures;
     $retour['minutes'] = $minutes;
+    $retour['path'] = "$id/result_multi.geojson";
     //var_dump(json_encode($retour));
     echo json_encode($retour);
     die();
