@@ -2,7 +2,7 @@
 session_start();
 if(!isset($_SESSION["prenom"])) {
     //header('Location: index.php');
-    //echo "<script>window.location.href='index.php';</script>";
+    echo "<script>window.location.href='index.php';</script>";
 }
 
 function API($street,$city,$key) {
@@ -147,12 +147,12 @@ if (isset($_GET['fields'])) {
     $duration_matrix = $matrix_decode["durations"];
     $duration_0 = $duration_matrix[0];
    // var_dump($duration_0);
-    echo "</br>";
+    //echo "</br>";
     $index = 0;
     $coord_order = array();
     array_push($coord_order,$list_coords[0]);
     //var_dump($coord_order);
-    echo "</br>";
+    //echo "</br>";
     $duration_0 = array_diff($duration_0,[0]);
     //var_dump($duration_0);
     foreach($list_coords as $val) {
@@ -160,22 +160,23 @@ if (isset($_GET['fields'])) {
             //var_dump($val);
             $min_value = min($duration_0);
             //var_dump($duration_0);
-            //echo "</br>";
             $t = array_keys($duration_0, $min_value);
             $in_delete = $t[0];
             array_push($coord_order,$list_coords[$in_delete]);
-            $duration_0 = array_diff($duration_0,[$in_delete]);
-           // echo $in_delete;
-            //var_dump($t);
-            //echo $duration_0[$index]."</br>";
+            unset($duration_0[$in_delete]);
         }
         $index++;
     }
-    var_dump($coord_order);
 
-    $path = getMultiPath($coords_encode,$mode_api);
+    $path = getMultiPath(json_encode($coord_order),$mode_api);
 
-    $fp = fopen("result_multi.geojson","w");
+    $id = $_SESSION["identifiant"];
+
+    if (!is_dir($id)) {
+        mkdir($id);
+    }
+
+    $fp = fopen("$id/result_multi.geojson","w");
     fwrite($fp,$path);
     fclose($fp);
 
@@ -188,10 +189,18 @@ if (isset($_GET['fields'])) {
     $data_tmp = $data[0];
     //var_dump($data_tmp);
     $data2 = $data_tmp["properties"];
-    $data3 = $data2["segments"];
-    $data4 = $data3[0];
-    $dist = $data4["distance"];
-    $duration = $data4["duration"];
+    $data3 = $data2["summary"];
+    //$data4 = $data3[0];
+
+    /*$d = $path_decode[0];
+    $data = $d["routes"];
+    var_dump($path_decode);
+    $data_tmp = $data[0];
+    $data2 = $data_tmp["summary"];*/
+
+
+    $dist = $data3["distance"];
+    $duration = $data3["duration"];
 
     $dist = $dist/1000;
     $duration = $duration/3600;
@@ -206,10 +215,20 @@ if (isset($_GET['fields'])) {
         $minutes = (int) ($duration*60);
         $minutes = $minutes - $nb_heures*60;
     }
-
     $dist = (int) $dist;
+
+
+    $retour = array();
+    $retour['success'] = true;
+    $retour['km'] = $dist;
+    $retour['heures'] = $nb_heures;
+    $retour['minutes'] = $minutes;
+    //var_dump(json_encode($retour));
+    echo json_encode($retour);
+    die();
+
     //echo "<script>window.location.href='distance_multi.php?km=$dist&heures=$nb_heures&minutes=$minutes';</script>";
-    clearstatcache();
-    exit;
+   // clearstatcache();
+  //  exit();
 }
 ?>

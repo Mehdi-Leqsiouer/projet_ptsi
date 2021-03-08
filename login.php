@@ -26,6 +26,7 @@ if (isset($_GET['identifiant']) && isset($_GET['password'])) {
 	if($nb_rows > 0) {
 		$_SESSION["prenom"] = $row["prenom"];
 		$_SESSION["nom"] = $row["nom"];
+		$_SESSION["identifiant"] = $row["identifiant"];
 		header('Location: distance.php');
 		exit();
 		

@@ -8,6 +8,7 @@ if(!isset($_SESSION["prenom"])) {
 else {
     $nom = $_SESSION["nom"];
     $prenom = $_SESSION["prenom"];
+    $id = $_SESSION["identifiant"];
 
 
 }
@@ -122,9 +123,9 @@ else {
                 /*L.marker([51.5, -0.09]).addTo(map)
                     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
                     .openPopup();*/
-
-                var geojsonLayer = new L.GeoJSON.AJAX("result_multi.geojson");
-                $.getJSON("result_multi.geojson", function(json) {
+                var id = "<?php echo $id; ?>";
+                var geojsonLayer = new L.GeoJSON.AJAX(id+"/result_multi.geojson");
+                $.getJSON(id+"/result_multi.geojson", function(json) {
                     //console.log(json); // this will show the info it in firebug console
                     var metadata = json.metadata;
                     var query = metadata.query;
@@ -137,6 +138,7 @@ else {
                     }
                 });
                 geojsonLayer.addTo(map);
+
 
             </script>
 
@@ -151,9 +153,9 @@ else {
                     <div class="row">
                         <div class="control-group" id="fields">
                             <div class="controls">
-                                <form role="form" autocomplete="off" action ="calcul_distance_multi.php" method ="GET">
+                                <form role="form" autocomplete="off" name ="distance_multi" id = "distance_multi"  method ="GET">
                                     <div class="entry input-group col-xs-3">
-                                        <input class="form-control" name="fields[]" type="text" placeholder="Point" />
+                                        <input class="form-control" name="fields[]" id = "field" type="text" placeholder="Point" />
                                         <span class="input-group-btn">
                             <button class="btn btn-success btn-add" type="button">
                                 <span class="glyphicon glyphicon-plus"></span>
@@ -195,6 +197,84 @@ else {
                             </div>
                             <br>
                                 </form>
+
+
+                            <script>
+                                $(document).ready(function() {
+
+                                    // process the form
+                                    $('#distance_multi').submit(function(event) {
+                                        event.preventDefault();
+                                        // get the form data
+                                        // there are many ways to get this data using jQuery (you can use the class or id also)
+                                        var values = $("input[name='fields[]']")
+                                            .map(function(){return $(this).val();}).get();
+                                        //console.log(values);
+                                        var e = document.getElementById("mode");
+                                        var strUser = e.options[e.selectedIndex].text;
+
+                                        var formData = {
+                                            'fields'              : values,
+                                            'mode'             : strUser
+                                        };
+                                        console.log(formData);
+                                        // process the form
+                                        $.ajax({
+                                            type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                                            url         : 'calcul_distance_multi.php', // the url where we want to POST
+                                            data        : formData,
+                                            processData: true // our data object
+                                        })
+                                            // using the done promise callback
+                                            .done(function(data) {
+
+                                                // log data to the console so we can see
+                                                //console.log(data);
+                                                var json_data = JSON.parse(data);
+                                                console.log(json_data);
+                                                console.log(json_data.heures);
+                                                if (json_data.success != true) {
+                                                    console.log("erreur");
+                                                }
+                                                else {
+                                                    $("#distance").val(json_data.km+" kilomètres");
+                                                    $("#temps").val(json_data.heures+" heures "+json_data.minutes+" minutes");
+
+                                                    var id = "<?php echo $id; ?>";
+                                                    var geojsonLayerV2 = new L.GeoJSON.AJAX(id+"/result_multi.geojson");
+                                                    $.getJSON(id+"/result_multi.geojson", function(json) {
+                                                        //console.log(json); // this will show the info it in firebug console
+                                                        var metadata = json.metadata;
+                                                        var query = metadata.query;
+                                                        var coord = query.coordinates;
+
+                                                        for (index = 0;index < coord.length;++index) {
+                                                            var tab = coord[index];
+                                                            L.marker([tab[1], tab[0]]).addTo(map)
+                                                                .bindPopup('Point')
+                                                        }
+                                                    });
+                                                    map.eachLayer(function (layer) {
+                                                        map.removeLayer(layer);
+                                                    });
+                                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                                    }).addTo(map);
+                                                    geojsonLayerV2.addTo(map);
+                                                }
+
+                                                // here we will handle errors and validation messages
+                                            }).fail(function() {
+                                            alert("erreur");
+                                        })
+                                        ;
+
+                                        // stop the form from submitting the normal way and refreshing the page
+                                        event.preventDefault();
+                                    });
+
+                                });
+                            </script>
 
                         </div>
                     </div>

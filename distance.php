@@ -8,10 +8,9 @@ if(!isset($_SESSION["prenom"])) {
 else {
 	$nom = $_SESSION["nom"];
 	$prenom = $_SESSION["prenom"];
-	
+    $id = $_SESSION["identifiant"];
 	
 }
-
 ?>
 
 <html>
@@ -149,9 +148,10 @@ else {
 		/*L.marker([51.5, -0.09]).addTo(map)
 			.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
 			.openPopup();*/
-		
-		var geojsonLayer = new L.GeoJSON.AJAX("result.geojson");
-		$.getJSON("result.geojson", function(json) {
+
+         var id = "<?php echo $id; ?>";
+		var geojsonLayer = new L.GeoJSON.AJAX(id+"/result.geojson");
+		$.getJSON(id+"/result.geojson", function(json) {
 			//console.log(json); // this will show the info it in firebug console
 			var metadata = json.metadata;
 			var query = metadata.query;
@@ -177,7 +177,7 @@ else {
 		
 		<h3 class="text-uppercase mt-4 font-weight-bold text-white"><?php echo "Bienvenue ".$nom." ".$prenom?></h3>
 		
-        <form role = "form" autocomplete="off" action="calcul_distance.php" method = "GET" >
+        <form role = "form" name ="distance" id = "distance" autocomplete="off" method = "GET" >
           <div class="row">
             <div class="col-lg-6">
               <div class="form-group">
@@ -218,7 +218,7 @@ else {
 			
 			<div class="col-lg-6">
               <div class="form-group">			
-                <input type="text" id = "distance" name = "distance" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
+                <input type="text" id = "distance_affichage" name = "distance_affichage" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
               </div>
             </div>
 			
@@ -242,6 +242,93 @@ else {
             </div>
         <div class="text-white">
       </div>
+
+
+          <script>
+              $(document).ready(function() {
+
+                  // process the form
+                  $('#distance').submit(function(event) {
+                      event.preventDefault();
+                      // get the form data
+                      // there are many ways to get this data using jQuery (you can use the class or id also)
+                      //console.log(values);
+                      var e = document.getElementById("mode");
+                      var strUser = e.options[e.selectedIndex].text;
+
+                      var formData = {
+                          'depart'              : $('input[name=depart]').val(),
+                          'arriver'              : $('input[name=arriver]').val(),
+                          'ville_depart'              : $('input[name=ville_depart]').val(),
+                          'ville_arriver'              : $('input[name=ville_arriver]').val(),
+                          'mode'             : strUser,
+                          'identifiant' : id
+                      };
+                      console.log(formData);
+                      // process the form
+                      $.ajax({
+                          type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                          url         : 'calcul_distance.php', // the url where we want to POST
+                          data        : formData,
+                          processData: true // our data object
+                      })
+                          // using the done promise callback
+                          .done(function(data) {
+
+                              // log data to the console so we can see
+                              //console.log(data);
+                              var json_data = JSON.parse(data);
+                              console.log(json_data);
+                              console.log(json_data.heures);
+                              if (json_data.success != true) {
+                                  console.log("erreur");
+                              }
+                              else {
+                                  $("#distance_affichage").val(json_data.km+" kilomètres");
+                                  $("#temps").val(json_data.heures+" heures "+json_data.minutes+" minutes");
+
+                                  var id = "<?php echo $id; ?>";
+                                  var geojsonLayerV2 = new L.GeoJSON.AJAX(id+"/result.geojson");
+                                  $.getJSON(id+"/result.geojson", function(json) {
+                                      //console.log(json); // this will show the info it in firebug console
+                                      var metadata = json.metadata;
+                                      var query = metadata.query;
+                                      var coord = query.coordinates;
+                                      var depart = coord[0];
+                                      var arriver = coord[1];
+                                      /*var depart = [coord[1],coord[0]];
+                                      var arriver = [coord[3],coord[2]];
+                                      console.log(depart);*/
+                                      L.marker([depart[1], depart[0]]).addTo(map)
+                                          .bindPopup('Point de départ')
+                                          .openPopup();
+                                      L.marker([arriver[1], arriver[0]]).addTo(map)
+                                          .bindPopup("Point d'arrivé")
+                                          .openPopup();
+                                  });
+                                  map.eachLayer(function (layer) {
+                                      map.removeLayer(layer);
+                                  });
+                                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                  }).addTo(map);
+                                  geojsonLayerV2.addTo(map);
+                              }
+
+                              // here we will handle errors and validation messages
+                          }).fail(function() {
+                          alert("erreur");
+                      })
+                      ;
+
+                      // stop the form from submitting the normal way and refreshing the page
+                      event.preventDefault();
+                  });
+
+              });
+          </script>
+
+
 
     </div>
 </div>

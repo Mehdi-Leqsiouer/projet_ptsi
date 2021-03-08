@@ -1,8 +1,10 @@
 ﻿<?php
 session_start();
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 if(!isset($_SESSION["prenom"])) {
-	//header('Location: index.php');
-	//echo "<script>window.location.href='index.php';</script>";
+    //header('Location: index.php');
+    //echo "<script>window.location.href='index.php';</script>";
 }
 
 function API($street,$city,$key) {
@@ -156,7 +158,7 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	$result = getCoord($loc1);
 	$result2 = getCoord($loc2);
 
-	var_dump($result2);
+	//var_dump($result2);
 	
 	$res1_decode = json_decode($result,true);
 	$res2_decode = json_decode($result2,true);
@@ -169,56 +171,20 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 
     $lat_arriver = $bbox2[1];
     $long_arriver = $bbox2[0];
-
-    echo $lat_depart;
-    echo "</br>";
-    echo $long_depart;
-
-	/*$data = $result["data"];
-	//var_dump ($data);
-	
-	$t = $data[0];
-	//var_dump($t);
-	
-	
-	$lat_depart = $t["latitude"];
-	$long_depart = $t["longitude"];
-
-	
-	//$result2 = json_decode($res2, true);
-	
-	//var_dump($result);
-	
-	$data2 = $result2["data"];
-	//var_dump ($data);
-	
-	$t2 = $data2[0];
-	//var_dump($t);
-	
-	#echo "</br>";
-	$lat_arriver = $t2["latitude"];
-	$long_arriver = $t2["longitude"];
-	#echo $lat_arriver;
-	#echo "</br>";
-	#echo $long_arriver;
-	
-	$value = array();
-	$ret_code = -1;
-	
-	exec("python3 get_distance.py $lat_depart $long_depart $lat_arriver $long_arriver $mode",$value,$ret_code);
-	$km = $value[0];
-	$heures = $value[1];
-	$minutes = $value[2];
-	
-	//echo $heures."</br>";
-	//echo $minutes;*/
-	
 	
 	$path = getPath($lat_depart,$long_depart,$lat_arriver,$long_arriver,$mode_api);
-	echo "</br></br>";
+	//echo "</br></br>";
 	//echo $path;
-	
-	$fp = fopen("result.geojson","w");
+
+
+
+    $id = $_GET["identifiant"];
+
+    if (!is_dir($id)) {
+        mkdir($id);
+    }
+
+    $fp = fopen("$id/result.geojson","w");
 	fwrite($fp,$path);
 	fclose($fp);
 	
@@ -237,13 +203,13 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 	$duration = $data4["duration"];
 	
 	//echo $dist;
-	echo "distance de base : ".$duration."</br>";
+	//echo "distance de base : ".$duration."</br>";
 	
 	
 	$dist = $dist/1000;
 	$duration = $duration/3600;
 	
-	echo "distance ensuite : ".$duration."</br>";
+	//echo "distance ensuite : ".$duration."</br>";
 	
 	$nb_heures = (int) ($duration%60);
 	if ($nb_heures < 1) {
@@ -254,13 +220,22 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
 		$minutes = $minutes - $nb_heures*60;
 	}
 	
-	echo $dist."</br>";
+//	echo $dist."</br>";
 	$dist = (int) $dist;
-	echo $minutes."</br>";;
-	echo $nb_heures."</br>";;
-	
-	echo "<script>window.location.href='distance.php?km=$dist&heures=$nb_heures&minutes=$minutes&arriver=$arriver&depart=$depart&v1=$v1&v2=$v2';</script>";
-	clearstatcache();
-	exit;
+	//echo $minutes."</br>";;
+	//echo $nb_heures."</br>";;
+
+    $retour = array();
+    $retour['success'] = true;
+    $retour['km'] = $dist;
+    $retour['heures'] = $nb_heures;
+    $retour['minutes'] = $minutes;
+    //var_dump(json_encode($retour));
+    echo json_encode($retour);
+
+    die();
+	//echo "<script>window.location.href='distance.php?km=$dist&heures=$nb_heures&minutes=$minutes&arriver=$arriver&depart=$depart&v1=$v1&v2=$v2';</script>";
+	//clearstatcache();
+	//exit();
 }
 ?>
