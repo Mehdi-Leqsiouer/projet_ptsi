@@ -255,6 +255,7 @@ else {
                       //console.log(values);
                       var e = document.getElementById("mode");
                       var strUser = e.options[e.selectedIndex].text;
+                      var id = "<?php echo $id; ?>";
 
                       var formData = {
                           'depart'              : $('input[name=depart]').val(),
@@ -279,7 +280,6 @@ else {
                               //console.log(data);
                               var json_data = JSON.parse(data);
                               console.log(json_data);
-                              console.log(json_data.heures);
                               if (json_data.success != true) {
                                   console.log("erreur");
                               }
@@ -288,10 +288,10 @@ else {
                                   $("#temps").val(json_data.heures+" heures "+json_data.minutes+" minutes");
 
                                   var file_path = json_data.path;
-
+                                  console.log(file_path);
                                   var id = "<?php echo $id; ?>";
-                                  var geojsonLayerV2 = new L.GeoJSON.AJAX(file_path);
-                                  $.getJSON(file_path, function(json) {
+                                  var geojsonLayerV2 = new L.GeoJSON.AJAX(id+"/"+file_path);
+                                  $.getJSON(id+"/"+file_path, function(json) {
                                       //console.log(json); // this will show the info it in firebug console
                                       var metadata = json.metadata;
                                       var query = metadata.query;

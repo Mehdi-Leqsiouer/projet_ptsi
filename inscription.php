@@ -24,6 +24,7 @@ if (isset($_GET['identifiant']) && isset($_GET['password']) && isset($_GET['nom'
 
 	$_SESSION["prenom"] = $prenom;
 	$_SESSION["nom"] = $nom;
+	$_SESSION["identifiant"] = $id;
 	header('Location: distance.php');
 	
 }

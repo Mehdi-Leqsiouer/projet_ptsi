@@ -242,8 +242,8 @@ else {
                                                     var file_path = json_data.path;
 
                                                     var id = "<?php echo $id; ?>";
-                                                    var geojsonLayerV2 = new L.GeoJSON.AJAX(file_path);
-                                                    $.getJSON(file_path, function(json) {
+                                                    var geojsonLayerV2 = new L.GeoJSON.AJAX(id+"/"+file_path);
+                                                    $.getJSON(id+"/"+file_path, function(json) {
                                                         //console.log(json); // this will show the info it in firebug console
                                                         var metadata = json.metadata;
                                                         var query = metadata.query;

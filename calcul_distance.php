@@ -183,8 +183,12 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
     if (!is_dir($id)) {
         mkdir($id);
     }
+    $old_file_id = ($lat_arriver+$lat_depart+$long_arriver+$long_depart)/4;
+    $file_id = str_replace(".","",$old_file_id);
+    $file_name = trim($file_id.".geojson");
+    //echo $file_name;
 
-    $fp = fopen("$id/result.geojson","w");
+    $fp = fopen("$id/$file_name","w");
 	fwrite($fp,$path);
 	fclose($fp);
 	
@@ -230,7 +234,7 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
     $retour['km'] = $dist;
     $retour['heures'] = $nb_heures;
     $retour['minutes'] = $minutes;
-    $retour['path'] = "$id/result.geojson";
+    $retour['path'] =  $file_name;
     //var_dump(json_encode($retour));
     echo json_encode($retour);
 

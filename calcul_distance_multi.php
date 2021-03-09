@@ -131,13 +131,22 @@ if (isset($_GET['fields'])) {
 
     $fields = $_GET['fields'];
     $list_coords = array();
+    $sum_coord = 0.0;
+    $nb_param = 0;
     foreach($fields as $val) {
         $coord = getCoord($val);
         $decode = json_decode($coord,true);
         $bbox = $decode['bbox'];
         $bbox_sliced = array_slice($bbox,0,2);
+        $sum_coord += $bbox_sliced[0]+$bbox_sliced[1];
+        $nb_param +=2;
         array_push($list_coords,$bbox_sliced);
     }
+
+    $old_file_id = $sum_coord/$nb_param;
+    $file_id = str_replace(".","",$old_file_id);
+    $file_name = trim($file_id.".geojson");
+
     $coords_encode = json_encode($list_coords);
     //var_dump($list_coords);
     $matrix = getMatrix($coords_encode,$mode_api);
@@ -176,7 +185,7 @@ if (isset($_GET['fields'])) {
         mkdir($id);
     }
 
-    $fp = fopen("$id/result_multi.geojson","w");
+    $fp = fopen("$id/$file_name","w");
     fwrite($fp,$path);
     fclose($fp);
 
@@ -223,7 +232,7 @@ if (isset($_GET['fields'])) {
     $retour['km'] = $dist;
     $retour['heures'] = $nb_heures;
     $retour['minutes'] = $minutes;
-    $retour['path'] = "$id/result_multi.geojson";
+    $retour['path'] = $file_name;
     //var_dump(json_encode($retour));
     echo json_encode($retour);
     die();
