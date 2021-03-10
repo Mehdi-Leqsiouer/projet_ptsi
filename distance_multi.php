@@ -9,6 +9,7 @@ else {
     $nom = $_SESSION["nom"];
     $prenom = $_SESSION["prenom"];
     $id = $_SESSION["identifiant"];
+    $id_user = $_SESSION["id_user"];
 
 
 }
@@ -115,6 +116,7 @@ else {
             <!--<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11880.492291371422!2d12.4922309!3d41.8902102!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28f1c82e908503c4!2sColosseo!5e0!3m2!1sit!2sit!4v1524815927977" frameborder="0" style="border:0" allowfullscreen></iframe>-->
             <script type = "text/javascript">
                 var map = L.map('map').setView([48.8566969, 2.3514616], 11);
+                var file_path = "";
 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -124,7 +126,7 @@ else {
                     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
                     .openPopup();*/
                 var id = "<?php echo $id; ?>";
-                var geojsonLayer = new L.GeoJSON.AJAX(id+"/result_multi.geojson");
+                /*var geojsonLayer = new L.GeoJSON.AJAX(id+"/result_multi.geojson");
                 $.getJSON(id+"/result_multi.geojson", function(json) {
                     //console.log(json); // this will show the info it in firebug console
                     var metadata = json.metadata;
@@ -137,7 +139,7 @@ else {
                             .bindPopup('Point')
                     }
                 });
-                geojsonLayer.addTo(map);
+                geojsonLayer.addTo(map);*/
 
 
             </script>
@@ -239,7 +241,7 @@ else {
                                                 else {
                                                     $("#distance").val(json_data.km+" kilomètres");
                                                     $("#temps").val(json_data.heures+" heures "+json_data.minutes+" minutes");
-                                                    var file_path = json_data.path;
+                                                    file_path = json_data.path;
 
                                                     var id = "<?php echo $id; ?>";
                                                     var geojsonLayerV2 = new L.GeoJSON.AJAX(id+"/"+file_path);
@@ -267,13 +269,11 @@ else {
                                                 // here we will handle errors and validation messages
                                             }).fail(function() {
                                             alert("erreur");
-                                        })
-                                        ;
+                                        });
 
                                         // stop the form from submitting the normal way and refreshing the page
                                         event.preventDefault();
                                     });
-
                                 });
                             </script>
 
@@ -310,7 +310,7 @@ else {
                 </script>-->
 
 
-                <form action="save_favori.php" method = "GET">
+                <form name= "save_favori" id = "save_favori" method = "GET">
                     <div class="col-12">
                         <button class="btn btn-light" type="favori">Enregistrer cet itinéraire</button>
                     </div>
@@ -320,6 +320,79 @@ else {
                 </div>
                 <div class="text-white">
                 </div>
+
+                <script>
+
+                    $(document).ready(function() {
+                        $('#save_favori').submit(function(event) {
+                            event.preventDefault();
+                            var values = $("input[name='fields[]']")
+                                .map(function(){return $(this).val();}).get();
+                            //console.log(values);
+                            // action="save_favori.php"
+                            var e = document.getElementById("mode");
+                            var strUser = e.options[e.selectedIndex].text;
+
+                            var name_route = values[0];
+                            for (index = 1;index < values.length;++index) {
+                                name_route = name_route.concat('-',values[index]);
+                            }
+                            name_route = name_route.concat('_',strUser);
+                            name_route = name_route.replace(/\s/g, '');
+                            var id_user = "<?php echo $id_user; ?>";
+                            console.log(name_route);
+
+                            if (file_path != "") {
+                                console.log("pas null");
+
+
+                                var data_save = {
+                                    'id_user'              : id_user,
+                                    'name_route'             : name_route,
+                                    'file_path'                : id+"/"+file_path
+                                };
+                                console.log(data_save);
+                                $.ajax({
+                                    type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                                    url         : 'save_favori.php', // the url where we want to POST
+                                    data        : data_save,
+                                    processData: true // our data object
+                                })
+                                    // using the done promise callback
+                                    .done(function(data) {
+
+                                        // log data to the console so we can see
+                                        //console.log(data);
+                                        console.log(data);
+                                        var json_data = JSON.parse(data);
+                                        console.log(json_data);
+                                        console.log(json_data.heures);
+                                        if (json_data.success != true) {
+                                            console.log("erreur");
+                                        }
+                                        else {
+                                            alert("Favori enregistré !");
+                                        }
+
+                                        // here we will handle errors and validation messages
+                                    }).fail(function() {
+                                    alert("erreur");
+                                });
+
+
+                            }
+                            else {
+                                alert("Vous devez avoir saisi un itineraire pour l'enregistrer ! ");
+                            }
+
+
+                            event.preventDefault();
+                        });
+                    });
+
+                </script>
+
+
 
             </div>
         </div>
