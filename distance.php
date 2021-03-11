@@ -185,7 +185,7 @@ else {
           <div class="row">
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Point de depart" value = "<?php echo $depart ?>" >
+                <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Point de départ" value = "<?php echo $depart ?>" >
               </div>
             </div>
 			<div class="col-lg-6">
@@ -241,6 +241,115 @@ else {
               <button class="btn btn-light" type="favori">Enregistrer cet itinéraire</button>
           </div>
       </form>
+
+          <div class="col-12">
+              <select id = "favs" name = "favs" value = "mode">
+
+              </select>
+          </div></br>
+
+
+          <script>
+              $(document).ready(function() {
+                  var array = [
+                      <?php
+                      require_once 'database_connect/db_connect.php';
+                      require_once 'database_connect/db_config.php';
+                      $con = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD,DB_DATABASE) or die(mysqli_error());
+
+                      $query = "select nom_favori,path from Favoris where id_user = $id_user and type = 'simple'";
+                      $result = mysqli_query($con,$query) or die ("Couldn't execute query: ".mysqli_error($con));
+                      while ($fav = mysqli_fetch_assoc($result)) {
+                          $favori = $fav["nom_favori"];
+                          $path = $fav["path"];
+                          $favori = str_replace('_',' en ',$favori);
+                          echo "['$favori','$path'],";
+                      }
+                      ?>
+                  ];
+                  console.log(array);
+                  var select = document.getElementById("favs");
+                  for(const val of array) {
+                      var option = document.createElement("option");
+                      option.value = val[0];
+                      option.text = val[0]
+                      option.id=val[1];
+                      option.setAttribute("name",val[1]);
+                      select.appendChild(option);
+                  }
+
+                  if (option.id != null) {
+                      var tmp_path = option.id;
+
+                      var geojsonLayerV4 = new L.GeoJSON.AJAX(tmp_path);
+                      $.getJSON(tmp_path, function (json) {
+                          //console.log(json); // this will show the info it in firebug console
+                          var metadata = json.metadata;
+                          var query = metadata.query;
+                          var coord = query.coordinates;
+
+                          for (index = 0; index < coord.length; ++index) {
+                              var tab = coord[index];
+                              L.marker([tab[1], tab[0]]).addTo(map)
+                                  .bindPopup('Point')
+                          }
+                      });
+                      map.eachLayer(function (layer) {
+                          map.removeLayer(layer);
+                      });
+                      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      }).addTo(map);
+                      geojsonLayerV4.addTo(map);
+                  }
+
+
+
+                  $('#favs').change(function(e) {
+                    e.preventDefault();
+                      var select = document.getElementById("favs");
+                      var item_selected = select.options[select.selectedIndex];
+
+                      var path_select = item_selected.getAttribute("name");
+
+                      var geojsonLayerV3 = new L.GeoJSON.AJAX(path_select);
+                      $.getJSON(path_select, function(json) {
+                          //console.log(json); // this will show the info it in firebug console
+                          var metadata = json.metadata;
+                          var query = metadata.query;
+                          var coord = query.coordinates;
+                          var depart = coord[0];
+                          var arriver = coord[1];
+                          /*var depart = [coord[1],coord[0]];
+                          var arriver = [coord[3],coord[2]];
+                          console.log(depart);*/
+                          L.marker([depart[1], depart[0]]).addTo(map)
+                              .bindPopup('Point de départ')
+                              .openPopup();
+                          L.marker([arriver[1], arriver[0]]).addTo(map)
+                              .bindPopup("Point d'arrivé")
+                              .openPopup();
+                      });
+                      map.eachLayer(function (layer) {
+                          map.removeLayer(layer);
+                      });
+                      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      }).addTo(map);
+                      geojsonLayerV3.addTo(map);
+
+                      console.log(path_select);
+                  });
+
+              });
+          </script>
+
+
+
+
+
+
+
 
 		<div class="col-12">
               <a  type="submit" href = "deconnection.php">Se déconnecter</a>
@@ -360,7 +469,8 @@ else {
                           var data_save = {
                               'id_user'              : id_user,
                               'name_route'             : name_route,
-                              'file_path'                : id+"/"+file_path
+                              'file_path'                : id+"/"+file_path,
+                              'type'                    :'simple'
                           };
                           console.log(data_save);
                           $.ajax({
