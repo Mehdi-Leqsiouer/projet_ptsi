@@ -61,6 +61,9 @@ else {
                         <a class="nav-link" href="distance_multi.php">Distance multi-points</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="distance_isochrone.php">Distance isochrones</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="contact.php">Contact</a>
                     </li>
                 </ul>
