@@ -242,6 +242,7 @@ else {
           </div>
       </form>
 
+          <h4 class="text-uppercase mt-4 font-weight-bold text-white">Vos favoris : </h4>
           <div class="col-12">
               <select id = "favs" name = "favs" value = "mode">
 
@@ -279,6 +280,7 @@ else {
                   }
 
                   if (option.id != null) {
+                      option.selected = true;
                       var tmp_path = option.id;
 
                       var geojsonLayerV4 = new L.GeoJSON.AJAX(tmp_path);

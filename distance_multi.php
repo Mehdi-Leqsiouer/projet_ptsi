@@ -319,6 +319,7 @@ else {
                     </div>
                 </form>
 
+                <h4 class="text-uppercase mt-4 font-weight-bold text-white">Vos favoris : </h4>
                 <div class="col-12">
                     <select id = "favs" name = "favs" value = "mode">
 
@@ -358,7 +359,7 @@ else {
 
                         if (option.id != null) {
                             var tmp_path = option.id;
-
+                            option.selected = true;
                             var geojsonLayerV4 = new L.GeoJSON.AJAX(tmp_path);
                             $.getJSON(tmp_path, function (json) {
                                 //console.log(json); // this will show the info it in firebug console
