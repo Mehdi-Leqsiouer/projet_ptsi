@@ -197,6 +197,11 @@ else {
                                 </div>
                             </div>
 
+                            <div class="col-lg-6">
+                                <input type="checkbox" id = "pois" name = "pois" class="form-control mt-2"  value = "Afficher les pois" checked>
+                                <label for="pois">Afficher les points d'intérets</label>
+                            </div>
+
                             <div class="col-12">
                                 <button class="btn btn-light" type="submit">Envoyer</button>
                             </div>
@@ -245,6 +250,7 @@ else {
                                                     $("#distance").val(json_data.km+" kilomètres");
                                                     $("#temps").val(json_data.heures+" heures "+json_data.minutes+" minutes");
                                                     file_path = json_data.path;
+                                                    var file_pois = json_data.pois;
 
                                                     var id = "<?php echo $id; ?>";
                                                     var geojsonLayerV2 = new L.GeoJSON.AJAX(id+"/"+file_path);
@@ -267,6 +273,16 @@ else {
                                                         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                                     }).addTo(map);
                                                     geojsonLayerV2.addTo(map);
+
+                                                    var chkBox = document.getElementById('pois');
+                                                    var pois = false;
+                                                    if (chkBox.checked) {
+                                                        pois = true;
+                                                    }
+                                                    if(pois == true) {
+                                                        var poisLayer = new L.GeoJSON.AJAX(id + "/" + file_pois);
+                                                        poisLayer.addTo(map);
+                                                    }
                                                 }
 
                                                 // here we will handle errors and validation messages

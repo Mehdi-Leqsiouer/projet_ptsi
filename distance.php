@@ -211,9 +211,10 @@ else {
 					<option = value="Pieton">Pieton</option>
 					<option = value="Voiture">Voiture</option>
 				</select>
+
               </div>
             </div>
-			
+
 			<div class="col-lg-6">
               <div class="form-group">
                 
@@ -222,15 +223,21 @@ else {
 			
 			<div class="col-lg-6">
               <div class="form-group">			
-                <input type="text" id = "distance_affichage" name = "distance_affichage" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
+                <input type="text" id = "distance_affichage" name = "distance_affichage" placeholder = "Distance en km"class="form-control mt-2" value ="<?php echo $km ?>" readonly>
               </div>
             </div>
 			
 			<div class="col-lg-6">
               <div class="form-group">			
-                <input type="text" id = "temps" name = "temps" class="form-control mt-2" value ="<?php echo $heures.$minutes ?>" readonly>
+                <input type="text" id = "temps" name = "temps" class="form-control mt-2" placeholder = "Temps" value ="<?php echo $heures.$minutes ?>" readonly>
               </div>
             </div>
+
+              <div class="col-lg-6">
+                  <input type="checkbox" id = "pois" name = "pois" class="form-control mt-2"  value = "Afficher les pois" checked>
+                  <label for="pois">Afficher les points d'intérets</label>
+              </div>
+
             <div class="col-12">
               <button class="btn btn-light" type="submit">Envoyer</button>
             </div>
@@ -372,7 +379,6 @@ else {
                       var e = document.getElementById("mode");
                       var strUser = e.options[e.selectedIndex].text;
                       var id = "<?php echo $id; ?>";
-
                       var formData = {
                           'depart'              : $('input[name=depart]').val(),
                           'arriver'              : $('input[name=arriver]').val(),
@@ -404,6 +410,7 @@ else {
                                   $("#temps").val(json_data.heures+" heures "+json_data.minutes+" minutes");
 
                                   file_path = json_data.path;
+                                  var file_pois = json_data.pois;
                                   console.log(file_path);
                                   var id = "<?php echo $id; ?>";
                                   var geojsonLayerV2 = new L.GeoJSON.AJAX(id+"/"+file_path);
@@ -430,7 +437,19 @@ else {
                                   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                   }).addTo(map);
+
                                   geojsonLayerV2.addTo(map);
+
+                                  var chkBox = document.getElementById('pois');
+                                  var pois = false;
+                                  if (chkBox.checked) {
+                                      pois = true;
+                                  }
+                                  if(pois == true) {
+                                      var poisLayer = new L.GeoJSON.AJAX(id + "/" + file_pois);
+                                      poisLayer.addTo(map);
+                                  }
+
                               }
 
                               // here we will handle errors and validation messages

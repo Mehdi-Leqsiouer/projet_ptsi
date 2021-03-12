@@ -115,6 +115,40 @@ function getMultiPath($list_coord,$mode) {
     return $response;
 }
 
+function getPois($depart,$arriver) {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://api.openrouteservice.org/pois");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+
+    //$arriver = json_encode($arriver);
+    //$depart = json_encode($depart);
+    $tab = array();
+    array_push($tab,$arriver);
+    array_push($tab,$depart);
+    $tab = json_encode($tab);
+    $arriver = json_encode($arriver);
+    //$post = "{'request':'pois','geometry':{'bbox':$tab,'geojson':{'type':'Point','coordinates':$arriver},'buffer':1000},'limit':10}";
+   // echo $post;
+   // curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, '{"request":"pois","geometry":{"bbox":'.$tab.',"geojson":{"type":"Point","coordinates":'.$arriver.'},"buffer":200},"limit":30}');
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
+        "Authorization: 5b3ce3597851110001cf6248fcb19b493ccf435791d6dac5ee251b1c",
+        "Content-Type: application/json; charset=utf-8"
+    ));
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return $response;
+}
+
 
 if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depart']) && isset($_GET['ville_arriver'])) {
 
@@ -191,6 +225,18 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
     $fp = fopen("$id/$file_name","w");
 	fwrite($fp,$path);
 	fclose($fp);
+
+
+	$coord_depart = [$long_depart,$lat_depart];
+	$coord_arriver = [$long_arriver,$lat_arriver];
+	$pois = getPois($coord_depart,$coord_arriver);
+
+	//echo $pois;
+
+	$file_pois = "pois.geojson";
+	$fp2 = fopen("$id/$file_pois","w");
+	fwrite($fp2,$pois);
+	fclose($fp2);
 	
 	
 	$path_decode = json_decode($path,true);
@@ -235,6 +281,7 @@ if (isset($_GET['depart']) && isset($_GET['arriver']) && isset($_GET['ville_depa
     $retour['heures'] = $nb_heures;
     $retour['minutes'] = $minutes;
     $retour['path'] =  $file_name;
+    $retour['pois'] = $file_pois;
     //var_dump(json_encode($retour));
     echo json_encode($retour);
 

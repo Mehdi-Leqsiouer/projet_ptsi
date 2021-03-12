@@ -7,7 +7,7 @@ curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
 curl_setopt($ch, CURLOPT_POST, TRUE);
 
-curl_setopt($ch, CURLOPT_POSTFIELDS, '{"request":"pois","geometry":{"bbox":[[2.2071267,48.8924273],[2.1802832,48.87778]],"geojson":{"type":"Point","coordinates":[2.2071267,48.8924273]},"buffer":200}}');
+curl_setopt($ch, CURLOPT_POSTFIELDS, '{"request":"pois","geometry":{"bbox":[[2.2028069496154785,48.88038635253906],[2.230592727661133,48.875728607177734]],"geojson":{"type":"Point","coordinates":[2.2028069496154785,48.88038635253906]},"buffer":1000},"limit":10}');
 
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     "Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
