@@ -263,7 +263,7 @@ else {
                                                         for (index = 0;index < coord.length;++index) {
                                                             var tab = coord[index];
                                                             L.marker([tab[1], tab[0]]).addTo(map)
-                                                                .bindPopup('Point')
+                                                                .bindPopup('Point').openPopup();
                                                         }
                                                     });
                                                     map.eachLayer(function (layer) {
@@ -386,7 +386,7 @@ else {
                                 for (index = 0; index < coord.length; ++index) {
                                     var tab = coord[index];
                                     L.marker([tab[1], tab[0]]).addTo(map)
-                                        .bindPopup('Point')
+                                        .bindPopup('Point').openPopup();
                                 }
                             });
                             map.eachLayer(function (layer) {
@@ -416,7 +416,7 @@ else {
                                 for (index = 0;index < coord.length;++index) {
                                     var tab = coord[index];
                                     L.marker([tab[1], tab[0]]).addTo(map)
-                                        .bindPopup('Point')
+                                        .bindPopup('Point').openPopup();
                                 }
                             });
                             map.eachLayer(function (layer) {
