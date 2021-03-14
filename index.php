@@ -34,7 +34,7 @@
         <div class="card-header mx-auto bg-dark">
             <!--<span> <img src="https://amar.vote/assets/img/amarVotebd.png" class="w-75" alt="Logo"> </span><br/>-->
 			 <span class="logo_title mt-5"> PROJET DISTANCE </span></br>
-                        <span class="logo_title mt-5"> Login Dashboard </span>
+                        <span class="logo_title mt-5"> Connexion </span>
 
         </div>
         <div class="card-body">
@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" name="btn" value="Login" class="btn btn-outline-danger float-right login_btn">
+                    <input type="submit" name="btn" value="Connexion" class="btn btn-outline-danger float-right login_btn">
                 </div>
 
             </form>
@@ -62,6 +62,10 @@
                     <a name="inscription" value="inscription" class="btn btn-outline-danger float-right login_btn" href = "inscription.html">Inscription</a>
                 </div>
         </div>
+    </br>
+        </br>
+        <p style ="color:white;">Projet créé et développé dans le cadre du projet PTSI de l'ESILV</p>
+        <p style ="color:white;">Mehdi LEQSIOUER --- Nada MATROUF --- Badr QOTB</p>
     </div>
 </div>
 </body>

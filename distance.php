@@ -223,40 +223,42 @@ else {
                       ?>
                   ];
                   console.log(array);
-                  var select = document.getElementById("favs");
-                  for(const val of array) {
-                      var option = document.createElement("option");
-                      option.value = val[0];
-                      option.text = val[0]
-                      option.id=val[1];
-                      option.setAttribute("name",val[1]);
-                      select.appendChild(option);
-                  }
+                  if (array.length > 0) {
+                      var select = document.getElementById("favs");
+                      for (const val of array) {
+                          var option = document.createElement("option");
+                          option.value = val[0];
+                          option.text = val[0]
+                          option.id = val[1];
+                          option.setAttribute("name", val[1]);
+                          select.appendChild(option);
+                      }
 
-                  if (option.id != null) {
-                      option.selected = true;
-                      var tmp_path = option.id;
+                      if (option.id != null) {
+                          option.selected = true;
+                          var tmp_path = option.id;
 
-                      var geojsonLayerV4 = new L.GeoJSON.AJAX(tmp_path);
-                      $.getJSON(tmp_path, function (json) {
-                          //console.log(json); // this will show the info it in firebug console
-                          var metadata = json.metadata;
-                          var query = metadata.query;
-                          var coord = query.coordinates;
+                          var geojsonLayerV4 = new L.GeoJSON.AJAX(tmp_path);
+                          $.getJSON(tmp_path, function (json) {
+                              //console.log(json); // this will show the info it in firebug console
+                              var metadata = json.metadata;
+                              var query = metadata.query;
+                              var coord = query.coordinates;
 
-                          for (index = 0; index < coord.length; ++index) {
-                              var tab = coord[index];
-                              L.marker([tab[1], tab[0]]).addTo(map)
-                                  .bindPopup('Point')
-                          }
-                      });
-                      map.eachLayer(function (layer) {
-                          map.removeLayer(layer);
-                      });
-                      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                      }).addTo(map);
-                      geojsonLayerV4.addTo(map);
+                              for (index = 0; index < coord.length; ++index) {
+                                  var tab = coord[index];
+                                  L.marker([tab[1], tab[0]]).addTo(map)
+                                      .bindPopup('Point')
+                              }
+                          });
+                          map.eachLayer(function (layer) {
+                              map.removeLayer(layer);
+                          });
+                          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          }).addTo(map);
+                          geojsonLayerV4.addTo(map);
+                      }
                   }
 
 
@@ -478,6 +480,7 @@ else {
 </div>
 
 </div>
+
 <!--
 <div class="row text-center bg-success text-white" id="author">
   <div class="col-12 mt-4 h3 ">
