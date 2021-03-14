@@ -14,12 +14,6 @@ else {
 }
 ?>
 
-<html>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
 
 <!DOCTYPE html>
 <html>
@@ -35,9 +29,12 @@ else {
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 	<!--Custom styles-->
-	<link rel="stylesheet" type="text/css" href="styles2.css">
+	<link rel="stylesheet" type="text/css" href="css/styles2.css">
 
-    <link rel="stylesheet" type="text/css" href="styles3.css">
+    <link rel="stylesheet" type="text/css" href="css/styles3.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top" id="banner">
         <div class="container">
@@ -73,58 +70,6 @@ else {
 
 <body>
 
-<?php 
-	if (isset($_GET['km'])) {
-		$km = $_GET['km']." kilomètres";
-	}
-	else {
-		$km = "";
-	}
-	
-	if (isset($_GET['depart'])) {
-		$depart = $_GET['depart'];
-	}
-	else {
-		$depart = "";
-	}
-	
-	if (isset($_GET['arriver'])) {
-		$arriver = $_GET['arriver'];
-	}
-	else {
-		$arriver = "";
-	}
-	
-	if (isset($_GET['v1'])) {
-		$v1 = $_GET['v1'];
-	}
-	else {
-		$v1 = "";
-	}
-	
-	if (isset($_GET['v2'])) {
-		$v2 = $_GET['v2'];
-	}
-	else {
-		$v2 = "";
-	}
-	
-	if (isset($_GET['minutes'])) {
-		$minutes = $_GET['minutes']." minutes";
-	}
-	else {
-		$minutes = "";
-	}
-	
-	if (isset($_GET['heures'])) {
-		$heures = $_GET['heures']." heures ";
-	}
-	else {
-		$heures = "";
-	}
-	
- ?>
-
 
 <div class="row" id="contatti">
 <div class="container mt-5" >
@@ -137,7 +82,7 @@ else {
   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
   crossorigin=""></script>
   
-  <script src="leaflet.ajax.min.js"> </script>
+  <script src="js/leaflet.ajax.min.js"> </script>
   
     <div class="row" style="height:550px;">
       <div class="col-md-6 maps" id = "map" > </div>
@@ -185,22 +130,22 @@ else {
           <div class="row">
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Rue de départ" value = "<?php echo $depart ?>" >
+                <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Rue de départ" >
               </div>
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville de départ *" value = "<?php echo $v1 ?>" required>
+                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville de départ *" required>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Rue d'arrivé" value = "<?php echo $arriver ?>" >
+                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Rue d'arrivé"  >
               </div>
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arrivée *" value = "<?php echo $v2 ?>" required>
+                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arrivée *" required>
               </div>
             </div>
 			
@@ -223,13 +168,13 @@ else {
 			
 			<div class="col-lg-6">
               <div class="form-group">			
-                <input type="text" id = "distance_affichage" name = "distance_affichage" placeholder = "Distance en km" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
+                <input type="text" id = "distance_affichage" name = "distance_affichage" placeholder = "Distance en km" class="form-control mt-2"  readonly>
               </div>
             </div>
 			
 			<div class="col-lg-6">
               <div class="form-group">			
-                <input type="text" id = "temps" name = "temps" class="form-control mt-2" placeholder = "Temps" value ="<?php echo $heures.$minutes ?>" readonly>
+                <input type="text" id = "temps" name = "temps" class="form-control mt-2" placeholder = "Temps" readonly>
               </div>
             </div>
 
@@ -242,7 +187,9 @@ else {
               <button class="btn btn-light" type="submit">Envoyer</button>
             </div>
           </div>
+        </br>
         </form>
+
           <form name ="save_favori" id = "save_favori" method = "GET">
           <div class="col-12">
               <button class="btn btn-light" type="favori">Enregistrer cet itinéraire</button>
@@ -352,14 +299,6 @@ else {
 
               });
           </script>
-
-
-
-
-
-
-
-
 		<div class="col-12">
               <a  type="submit" href = "deconnection.php">Se déconnecter</a>
             </div>
@@ -537,12 +476,6 @@ else {
 
     </div>
 </div>
-    <link rel="stylesheet" type="text/css" href="footer.css">
-    <footer>
-    <div id="footer">
-        test
-    </div>
-    </footer>
 
 </div>
 <!--

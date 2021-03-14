@@ -15,11 +15,6 @@ else {
 }
 
 ?>
-
-<html>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
 
@@ -37,10 +32,12 @@ else {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
     <!--Custom styles-->
-    <link rel="stylesheet" type="text/css" href="styles2.css">
+    <link rel="stylesheet" type="text/css" href="css/styles2.css">
 
-    <link rel="stylesheet" type="text/css" href="styles3.css">
-    <link rel="stylesheet" type="text/css" href="style_mutli.css">
+    <link rel="stylesheet" type="text/css" href="css/styles3.css">
+    <link rel="stylesheet" type="text/css" href="css/style_multi.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top" id="banner">
         <div class="container">
@@ -75,31 +72,6 @@ else {
 </head>
 
 <body>
-
-<?php
-if (isset($_GET['km'])) {
-    $km = $_GET['km']." kilomètres";
-}
-else {
-    $km = "";
-}
-
-if (isset($_GET['minutes'])) {
-    $minutes = $_GET['minutes']." minutes";
-}
-else {
-    $minutes = "";
-}
-
-if (isset($_GET['heures'])) {
-    $heures = $_GET['heures']." heures ";
-}
-else {
-    $heures = "";
-}
-
-?>
-
 
 <div class="row" id="contatti">
     <div class="container mt-5" >
@@ -152,7 +124,7 @@ else {
 
                 <h3 class="text-uppercase mt-4 font-weight-bold text-white"><?php echo "Bienvenue ".$nom." ".$prenom?></h3>
 
-                <script src="js_dynamic_field.js"> </script>
+                <script src="js/js_dynamic_field.js"> </script>
 
                 <div class="container">
                     <div class="row">
