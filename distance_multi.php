@@ -187,13 +187,13 @@ else {
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input type="text" size="50" id = "distance" name = "distance" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
+                                    <input type="text" size="50" id = "distance" name = "distance"   placeholder = "Distance en km" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input type="text" size="50" id = "temps" name = "temps" class="form-control mt-2" value ="<?php echo $heures.$minutes ?>" readonly>
+                                    <input type="text" size="50" id = "temps" name = "temps"  placeholder = "Temps" class="form-control mt-2" value ="<?php echo $heures.$minutes ?>" readonly>
                                 </div>
                             </div>
 

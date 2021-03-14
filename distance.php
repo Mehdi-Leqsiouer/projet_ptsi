@@ -185,22 +185,22 @@ else {
           <div class="row">
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Point de départ" value = "<?php echo $depart ?>" >
+                <input type="text" id = "depart" name = "depart" class="form-control mt-2" placeholder="Rue de départ" value = "<?php echo $depart ?>" >
               </div>
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville de départ*" value = "<?php echo $v1 ?>" required>
+                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville de départ *" value = "<?php echo $v1 ?>" required>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Point d'arrivé" value = "<?php echo $arriver ?>" >
+                <input type="text" id = "arriver" name = "arriver" class="form-control mt-2" placeholder="Rue d'arrivé" value = "<?php echo $arriver ?>" >
               </div>
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arrivée*" value = "<?php echo $v2 ?>" required>
+                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arrivée *" value = "<?php echo $v2 ?>" required>
               </div>
             </div>
 			
@@ -223,7 +223,7 @@ else {
 			
 			<div class="col-lg-6">
               <div class="form-group">			
-                <input type="text" id = "distance_affichage" name = "distance_affichage" placeholder = "Distance en km"class="form-control mt-2" value ="<?php echo $km ?>" readonly>
+                <input type="text" id = "distance_affichage" name = "distance_affichage" placeholder = "Distance en km" class="form-control mt-2" value ="<?php echo $km ?>" readonly>
               </div>
             </div>
 			
@@ -537,13 +537,30 @@ else {
 
     </div>
 </div>
-</div>
+    <link rel="stylesheet" type="text/css" href="footer.css">
+    <footer>
+    <div id="footer">
+        test
+    </div>
+    </footer>
 
+</div>
+<!--
 <div class="row text-center bg-success text-white" id="author">
   <div class="col-12 mt-4 h3 ">
+      test !!
 </div>
 <div class="col-12 my-2">
+
 </div>
-</div>
-<body>
+
+
+</div>-->
+
+</body>
+
+    <!--Bottom Footer-->
+
+    <!--Bottom Footer-->
+
 </html>
