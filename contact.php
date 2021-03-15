@@ -14,7 +14,7 @@ else {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="utf-8" http-equiv="Cache-control" content="no-cache">
     <title>Distance</title>

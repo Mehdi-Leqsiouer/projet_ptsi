@@ -1,6 +1,10 @@
 <?php
 session_start();
+?>
+<!DOCTYPE html>
 
+<html lang="fr">
+<?php
 if(!isset($_SESSION["prenom"])) {
 	//header('Location: index.php');
 	echo "<script>window.location.href='index.php';</script>";
@@ -14,9 +18,6 @@ else {
 }
 ?>
 
-
-<!DOCTYPE html>
-<html>
 <head>
 <meta charset="utf-8" http-equiv="Cache-control" content="no-cache">
 	<title>Distance</title>
@@ -84,7 +85,7 @@ else {
   
   <script src="js/leaflet.ajax.min.js"> </script>
   
-    <div class="row" style="height:550px;">
+    <div class="row" style="height:575px;">
       <div class="col-md-6 maps" id = "map" > </div>
          <!--<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11880.492291371422!2d12.4922309!3d41.8902102!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28f1c82e908503c4!2sColosseo!5e0!3m2!1sit!2sit!4v1524815927977" frameborder="0" style="border:0" allowfullscreen></iframe>-->
 		 <script type = "text/javascript">
@@ -120,11 +121,13 @@ else {
 		geojsonLayer.addTo(map);*/
 		
 		 </script>
-      
+
       <div class="col-md-6">
         <h2 class="text-uppercase mt-3 font-weight-bold text-white">DISTANCE</h2>
 		
 		<h3 class="text-uppercase mt-4 font-weight-bold text-white"><?php echo "Bienvenue ".$nom." ".$prenom?></h3>
+          <p>Bonjour ! Veuillez saisir un point de départ et un point d'arrivée. A minima la ville, et si le résultat n'est pas assez précis veuillez
+          précisez le département puis la rue</p>
 		
         <form role = "form" name ="distance" id = "distance" autocomplete="off" method = "GET" >
           <div class="row">
@@ -135,7 +138,7 @@ else {
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville/Département de départ *" required>
+                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville (et département) de départ *" required>
               </div>
             </div>
             <div class="col-lg-6">
@@ -145,16 +148,16 @@ else {
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville/Département d'arrivée *" required>
+                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville (et département) d'arrivée *" required>
               </div>
             </div>
 			
 			<div class="col-lg-6">
               <div class="form-group">
-                <select id = "mode" name = "mode" value = "mode">
-					<option = value="Velo">Velo</option>
-					<option = value="Pieton">Pieton</option>
-					<option = value="Voiture">Voiture</option>
+                <select id = "mode" name = "mode">
+					<option  value="Velo">Velo</option>
+					<option  value="Pieton">Pieton</option>
+					<option  value="Voiture">Voiture</option>
 				</select>
 
               </div>
@@ -198,7 +201,7 @@ else {
 
           <h4 class="text-uppercase mt-4 font-weight-bold text-white">Vos favoris : </h4>
           <div class="col-12">
-              <select id = "favs" name = "favs" value = "mode">
+              <select id = "favs" name = "favs">
 
               </select>
           </div></br>

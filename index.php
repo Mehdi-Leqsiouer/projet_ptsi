@@ -9,7 +9,7 @@
 <!------ Include the above in your HEAD tag ---------->
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 	<title>Login Page</title>
    <!--Made with love by Mutiullah Samim -->

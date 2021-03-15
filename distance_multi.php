@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<?php
 if(!isset($_SESSION["prenom"])) {
     //header('Location: index.php');
     echo "<script>window.location.href='index.php';</script>";
@@ -20,8 +23,7 @@ else {
 <!------ Include the above in your HEAD tag ---------->
 
 
-<!DOCTYPE html>
-<html>
+
 <head>
     <meta charset="utf-8" http-equiv="Cache-control" content="no-cache">
     <title>Distance</title>
@@ -89,7 +91,7 @@ else {
 
         <script src="js/leaflet.ajax.min.js"> </script>
 
-        <div class="row" style="height:550px;">
+        <div class="row" style="height:700px;">
             <div class="col-md-6 maps" id = "map" > </div>
             <!--<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11880.492291371422!2d12.4922309!3d41.8902102!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x28f1c82e908503c4!2sColosseo!5e0!3m2!1sit!2sit!4v1524815927977" frameborder="0" style="border:0" allowfullscreen></iframe>-->
             <script type = "text/javascript">
@@ -127,6 +129,8 @@ else {
                 <h3 class="text-uppercase mt-4 font-weight-bold text-white"><?php echo "Bienvenue ".$nom." ".$prenom?></h3>
 
                 <script src="js/js_dynamic_field.js"> </script>
+                <p>Bonjour ! Veuillez saisir un point de départ et un point d'arrivée. A minima la ville, et si le résultat n'est pas assez précis veuillez
+                    précisez le département puis la rue</p>
 
                 <div class="container">
                     <div class="row">

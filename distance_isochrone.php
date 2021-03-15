@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<?php
 if(!isset($_SESSION["prenom"])) {
     //header('Location: index.php');
     echo "<script>window.location.href='index.php';</script>";
@@ -17,9 +20,6 @@ else {
 ?>
 <!------ Include the above in your HEAD tag ---------->
 
-
-<!DOCTYPE html>
-<html>
 <head>
     <meta charset="utf-8" http-equiv="Cache-control" content="no-cache">
     <title>Distance</title>
@@ -84,7 +84,7 @@ else {
                 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                 crossorigin=""></script>
 
-        <script src="leaflet.ajax.min.js"> </script>
+        <script src="js/leaflet.ajax.min.js"> </script>
 
         <div class="row" style="height:550px;">
             <div class="col-md-6 maps" id = "map" > </div>
@@ -125,6 +125,8 @@ else {
                 <h3 class="text-uppercase mt-4 font-weight-bold text-white"><?php echo "Bienvenue ".$nom." ".$prenom?></h3>
 
                 <script src="js/js_dynamic_field.js"> </script>
+                <p>Bonjour ! Veuillez saisir un point de départ et un point d'arrivée. A minima la ville, et si le résultat n'est pas assez précis veuillez
+                    précisez le département puis la rue</p>
 
                 <div class="container">
                     <div class="row">
