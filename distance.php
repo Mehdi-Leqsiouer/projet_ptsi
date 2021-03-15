@@ -135,7 +135,7 @@ else {
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville de départ *" required>
+                <input type="text" id = "ville_depart" name = "ville_depart" class="form-control mt-2" placeholder="Ville/Département de départ *" required>
               </div>
             </div>
             <div class="col-lg-6">
@@ -145,7 +145,7 @@ else {
             </div>
 			<div class="col-lg-6">
               <div class="form-group">
-                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville d'arrivée *" required>
+                <input type="text" id = "ville_arriver" name = "ville_arriver" class="form-control mt-2" placeholder="Ville/Département d'arrivée *" required>
               </div>
             </div>
 			
