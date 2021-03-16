@@ -378,6 +378,21 @@ else {
                             }
                         }
 
+                        var innerHTML = "";
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(showPosition);
+                        } else {
+                            innerHTML = "Geolocation is not supported by this browser.";
+                        }
+                        function showPosition(position) {
+                            innerHTML = "Latitude: " + position.coords.latitude +
+                                "<br>Longitude: " + position.coords.longitude;
+                            console.log(innerHTML);
+                            L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
+                                .bindPopup("Votre position actuelle")
+                                .openPopup();
+                        }
+
 
                         $('#favs').change(function(e) {
                             e.preventDefault();

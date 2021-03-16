@@ -97,6 +97,21 @@ else {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(map);
 
+                var innerHTML = "";
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    innerHTML = "Geolocation is not supported by this browser.";
+                }
+                function showPosition(position) {
+                    innerHTML = "Latitude: " + position.coords.latitude +
+                        "<br>Longitude: " + position.coords.longitude;
+                    console.log(innerHTML);
+                    L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
+                        .bindPopup("Votre position actuelle")
+                        .openPopup();
+                }
+
                 /*L.marker([51.5, -0.09]).addTo(map)
                     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
                     .openPopup();*/
@@ -176,6 +191,8 @@ else {
 
                             <script>
                                 $(document).ready(function() {
+
+
 
                                     // process the form
                                     $('#distance_isochrones').submit(function(event) {

@@ -71,7 +71,6 @@ else {
 
 <body>
 
-
 <div class="row" id="contatti">
 <div class="container mt-5" >
     <br>
@@ -262,6 +261,21 @@ else {
                           }).addTo(map);
                           geojsonLayerV4.addTo(map);
                       }
+                  }
+
+                  var innerHTML = "";
+                  if (navigator.geolocation) {
+                      navigator.geolocation.getCurrentPosition(showPosition);
+                  } else {
+                      innerHTML = "Geolocation is not supported by this browser.";
+                  }
+                  function showPosition(position) {
+                      innerHTML = "Latitude: " + position.coords.latitude +
+                          "<br>Longitude: " + position.coords.longitude;
+                      console.log(innerHTML);
+                      L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
+                          .bindPopup("Votre position actuelle")
+                          .openPopup();
                   }
 
 
