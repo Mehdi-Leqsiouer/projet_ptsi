@@ -43,14 +43,14 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="identifiant" id = "identifiant" class="form-control" placeholder="Username" required>
+                    <input type="text" name="identifiant" id = "identifiant" class="form-control" placeholder="Identifiant" required>
                 </div>
 
                 <div class="input-group form-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
-                    <input type="password" name="password" id = "password" class="form-control" placeholder="Password" required>
+                    <input type="password" name="password" id = "password" class="form-control" placeholder="Mot de passe" required>
                 </div>
 
                 <div class="form-group">
@@ -59,7 +59,7 @@
 
             </form>
 			<div class="form-group">
-                    <a name="inscription" value="inscription" class="btn btn-outline-danger float-right login_btn" href = "inscription.html">Inscription</a>
+                    <a name="inscription" value="inscription" class="btn btn-outline-danger float-right login_btn" href = "inscription_html.php">Inscription</a>
                 </div>
         </div>
     </br>

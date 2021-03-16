@@ -102,11 +102,14 @@ else {
                     navigator.geolocation.getCurrentPosition(showPosition);
                 } else {
                     innerHTML = "Geolocation is not supported by this browser.";
+                    //map = L.map('map').setView([48.8566969, 2.3514616], 11);
                 }
                 function showPosition(position) {
                     innerHTML = "Latitude: " + position.coords.latitude +
                         "<br>Longitude: " + position.coords.longitude;
                     console.log(innerHTML);
+                   // map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 11);
+                    //map.setView(new L.LatLng(position.coords.latitude, position.coords.longitude),11);
                     L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
                         .bindPopup("Votre position actuelle")
                         .openPopup();

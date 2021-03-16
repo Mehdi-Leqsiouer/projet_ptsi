@@ -20,12 +20,15 @@ if (isset($_GET['identifiant']) && isset($_GET['password']) && isset($_GET['nom'
 	
 	$query = "insert into Utilisateurs(identifiant,password,nom,prenom) values ('$id','$pwd_md5','$nom','$prenom')";
 	
-	$result = mysqli_query($con,$query) or die ("Couldn't execute query: ".mysqli_error($con));
+	$result = mysqli_query($con,$query) or die (header('Location: inscription_html.php?fail=true'));
 
 	/*$_SESSION["prenom"] = $prenom;
 	$_SESSION["nom"] = $nom;
 	$_SESSION["identifiant"] = $id;*/
-	header('Location: index.php');
+    if ($result)
+	    header('Location: index.php');
+    else
+        header('Location: inscription.html');
 	
 }
 else {
