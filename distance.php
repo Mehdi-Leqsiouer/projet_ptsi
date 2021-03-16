@@ -440,7 +440,7 @@ else {
                       name_route = name_route.concat('_',strUser);
                       var id_user = "<?php echo $id_user; ?>";
                       console.log(name_route);
-
+                      var id = "<?php echo $id; ?>";
                       if (file_path != "") {
                           console.log("pas null");
 
