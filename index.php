@@ -38,6 +38,7 @@
 
         </div>
         <div class="card-body">
+            <?php if (isset($_GET['fail'])) echo "<p style='color:red;'>Identifiant/Mdp incorrects ! </p>";?>
             <form action="login.php" method="GET">
                 <div class="input-group form-group">
                     <div class="input-group-prepend">

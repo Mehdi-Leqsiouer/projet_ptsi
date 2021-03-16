@@ -44,6 +44,7 @@ if (isset($_GET['identifiant']) && isset($_GET['password'])) {
         header('Location: distance.php');
         exit();
     }
+    header('Location: index.php?fail=true');
 	
 }
 else {
